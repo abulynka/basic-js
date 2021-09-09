@@ -1,6 +1,25 @@
-const CustomError = require("../extensions/custom-error");
+import { NotImplementedError } from '../extensions/index.js';
 
-class VigenereCipheringMachine {
+/**
+ * Implement class VigenereCipheringMachine that allows us to create
+ * direct and reverse ciphering machines according to task description
+ * 
+ * @example
+ * 
+ * const directMachine = new VigenereCipheringMachine();
+ * 
+ * const reverseMachine = new VigenereCipheringMachine(false);
+ * 
+ * directMachine.encrypt('attack at dawn!', 'alphonse') => 'AEIHQX SX DLLU!'
+ * 
+ * directMachine.decrypt('AEIHQX SX DLLU!', 'alphonse') => 'ATTACK AT DAWN!'
+ * 
+ * reverseMachine.encrypt('attack at dawn!', 'alphonse') => '!ULLD XS XQHIEA'
+ * 
+ * reverseMachine.decrypt('AEIHQX SX DLLU!', 'alphonse') => '!NWAD TA KCATTA'
+ * 
+ */
+export default class VigenereCipheringMachine {
   /**
    * @param {Boolean} direct
    */
@@ -21,21 +40,11 @@ class VigenereCipheringMachine {
   }
 
   /**
-   * @param {string} text
-   * @param {string} key
-   * @returns {string}
-   * @private
-   */
-  _getKey(text, key) {
-    return key.toUpperCase().repeat(Math.ceil(text.length / key.length)).substr(0, text.length);
-  }
-
-  /**
    * @param {string} plain
    * @param {string} key
    * @return {string}
    */
-  encrypt(plain, key) {
+  encrypt() {
     const fullKey = this._getKey(plain, key);
     plain = plain.toUpperCase();
     let counter = 0;
@@ -62,7 +71,7 @@ class VigenereCipheringMachine {
    * @param {string} key
    * @return {string}
    */
-  decrypt(encrypted, key) {
+  decrypt() {
     const fullKey = this._getKey(encrypted, key);
     encrypted = encrypted.toUpperCase();
     let counter = 0;
@@ -85,5 +94,3 @@ class VigenereCipheringMachine {
     return result.join('');
   }
 }
-
-module.exports = VigenereCipheringMachine;
