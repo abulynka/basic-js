@@ -11,19 +11,25 @@ import { NotImplementedError } from '../extensions/index.js';
  * getSeason(new Date(2020, 02, 31)) => 'spring'
  * 
  */
-export default function getSeason(/* date */) {
-  if (!date) {
+export default function getSeason(date) {
+  if (arguments.length === 0) {
     return 'Unable to determine the time of year!';
   }
-
-  if (typeof date !== 'object' || typeof date.getMonth !== "function" || !(date instanceof Date)) {
-    throw new Error();
+  if (!date
+    || typeof date !== 'object'
+    || typeof date.getMonth !== "function"
+    || !(date instanceof Date)) {
+    throw new Error('Invalid date!');
   }
 
   // checks for fake
-  const dateCheck = new Date(date.toString());
-  if (dateCheck.getFullYear() !== date.getFullYear()) {
-    throw new Error();
+  try {
+    const dateCheck = new Date(date.toString());
+    if (dateCheck.getFullYear() !== date.getFullYear()) {
+      throw new Error('Invalid date!');
+    }
+  } catch (e) {
+    throw new Error('Invalid date!');
   }
 
   const month = date.getMonth();
@@ -40,6 +46,6 @@ export default function getSeason(/* date */) {
   } else if (month === 11) {
     return 'winter';
   } else {
-    throw new Error();
+    throw new Error('Invalid date!');
   }
 }
