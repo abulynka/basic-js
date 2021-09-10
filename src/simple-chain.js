@@ -1,10 +1,10 @@
-import { NotImplementedError } from '../extensions/index.js';
+import { NotImplementedError, checkForThrowingErrors } from '../extensions/index.js';
 
 /**
  * Implement chainMaker object according to task description
  * 
  */
-export default {
+const chainMaker = {
   _chain: [],
 
   getLength() {
@@ -20,12 +20,12 @@ export default {
   },
 
   removeLink(position) {
-    if (position && typeof position === 'number' && 0 < position <= this._chain.length) {
+    if (position && typeof position === 'number' && position < this._chain.length && position > 0) {
       this._chain.splice(position - 1, 1);
       return this;
     }
     this._chain = [];
-    throw new Error();
+    throw new Error('You can\'t remove incorrect link!');
   },
 
   reverseChain() {
@@ -40,3 +40,4 @@ export default {
   }
 };
 
+export default chainMaker;
