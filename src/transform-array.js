@@ -1,5 +1,9 @@
 import { NotImplementedError } from '../extensions/index.js';
 
+function isControlSymbol(symbol) {
+  return symbol === '--discard-next' || symbol === '--discard-prev' || symbol === '--double-next' || symbol === '--double-prev';
+}
+
 /**
  * Create transformed array based on the control sequences that original
  * array contains
@@ -13,13 +17,9 @@ import { NotImplementedError } from '../extensions/index.js';
  * transform([1, 2, 3, '--discard-prev', 4, 5]) => [1, 2, 4, 5]
  * 
  */
-export default function transform(/* arr */) {
-  if (!arr || typeof arr !== 'object') {
-    throw new Error();
-  }
-
-  function isControlSymbol(symbol) {
-    return symbol === '--discard-next' || symbol === '--discard-prev' || symbol === '--double-next' || symbol === '--double-prev';
+export default function transform(arr) {
+  if (Array.isArray(arr) === false) {
+    throw new Error('\'arr\' parameter must be an instance of the Array!');
   }
 
   const result = [];
