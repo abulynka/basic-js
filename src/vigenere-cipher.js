@@ -23,7 +23,7 @@ export default class VigenereCipheringMachine {
   /**
    * @param {Boolean} direct
    */
-  constructor(direct) {
+   constructor(direct) {
     this._direct = direct;
     this._alphabet = [...Array(26)].map((q,w) => String.fromCharCode(w+65));
     this._alphabetKeys = {};
@@ -40,17 +40,40 @@ export default class VigenereCipheringMachine {
   }
 
   /**
+   * @param {string} text
+   * @param {string} key
+   * @returns {string}
+   * @private
+   */
+  _getKey(text, key) {
+    return key.toUpperCase().repeat(Math.ceil(text.length / key.length)).substr(0, text.length);
+  }
+
+  _checkArgs(value) {
+    if (typeof value !== 'string' || value.length === 0) {
+      throw new Error('Incorrect arguments!');
+    }
+  }
+
+  /**
    * @param {string} plain
    * @param {string} key
    * @return {string}
    */
-  encrypt() {
+  encrypt(plain, key) {
+    if (arguments.length !== 2) {
+      throw new Error('Incorrect arguments!');
+    }
+
+    this._checkArgs(plain);
+    this._checkArgs(key);
+
     const fullKey = this._getKey(plain, key);
     plain = plain.toUpperCase();
     let counter = 0;
     let result = plain.split('')
         .map(
-            (value, index) => {
+            (value) => {
               const indexA = this._alphabetKeys[value];
               const indexB = this._alphabetKeys[fullKey[counter]];
               if (!this._square.hasOwnProperty(indexA) || !this._square[indexA].hasOwnProperty(indexB)) {
@@ -71,7 +94,14 @@ export default class VigenereCipheringMachine {
    * @param {string} key
    * @return {string}
    */
-  decrypt() {
+  decrypt(encrypted, key) {
+    if (arguments.length !== 2) {
+      throw new Error('Incorrect arguments!');
+    }
+
+    this._checkArgs(encrypted);
+    this._checkArgs(key);
+
     const fullKey = this._getKey(encrypted, key);
     encrypted = encrypted.toUpperCase();
     let counter = 0;
